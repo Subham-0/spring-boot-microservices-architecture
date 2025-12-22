@@ -37,5 +37,19 @@ eureka:
   instance:
     hostname: localhost
 
+resilience4j:
+  circuitbreaker:
+    instances:
+      departmentService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+  timelimiter:
+    instances:
+      departmentService:
+        timeoutDuration: 2s
 
 
