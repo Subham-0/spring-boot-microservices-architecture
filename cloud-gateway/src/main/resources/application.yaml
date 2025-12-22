@@ -1,0 +1,78 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/users/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: userService
+                    fallbackUri: forward:/userServiceFallback
+
+            - id: department-service
+              uri: lb://DEPARTMENT-SERVICE
+              predicates:
+                - Path=/departments/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: departmentService
+                    fallbackUri: forward:/departmentServiceFallback
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      userService:
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+
+      departmentService:
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+
+  timelimiter:
+    instances:
+      userService:
+        timeoutDuration: 3s
+      departmentService:
+        timeoutDuration: 3s
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
