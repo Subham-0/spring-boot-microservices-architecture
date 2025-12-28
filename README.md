@@ -164,5 +164,6 @@ This layered approach follows **industry-standard microservices architecture pra
 |--------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
 | [`v1.0`](https://github.com/Subham-0/spring-boot-microservices-architecture/releases/tag/V1.0)                    | Gateway-level Circuit Breaker         |
 | [`v2.0-service-resilience`](https://github.com/Subham-0/spring-boot-microservices-architecture/releases/tag/v2.0-service-resilience) | Feign + Resilience4j at service level |
+| [`v3.0config-server+zipkin-server`](https://github.com/Subham-0/spring-boot-microservices-architecture/releases/tag/v3.0config-server_and_zipkin_server) | config server + zipkin server |
 
 ---
